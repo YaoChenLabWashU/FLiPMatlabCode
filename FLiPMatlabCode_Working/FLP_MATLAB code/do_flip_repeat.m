@@ -2,12 +2,15 @@
 
 % Set num_repeat to the number of repeats you need
 % Do all other configurations in the GUI as usual
-num_repeat = 2; 
-
+num_repeat = 5; 
+%david addition
+%make an array which will hold all the timestamps,
+trigger_times = cell(1,num_repeat);
+%end david addition
 i_repeat = 1;
 while i_repeat <= num_repeat
     fprintf('Current repeat %d\n', i_repeat)
-    if strcmp(state.internal.statusString,'Complete') || strcmp(state.internal.statusString, 'Ready') || strcmp(state.internal.statusString, 'CycleChanged') || strcmp(state.internal.statusString, '')|| strcmp(state.internal.statusString, 'cycle saved')
+    if strcmp(state.internal.statusString,'Complete') || strcmp(state.internal.statusString, 'Ready') || strcmp(state.internal.statusString, 'CycleChanged') || strcmp(state.internal.statusString, '')
         timerDoOne;
     else
         warning('Unable to repeat - check Main Control status\n');
@@ -26,8 +29,15 @@ while i_repeat <= num_repeat
     while ~strcmp(state.internal.statusString, 'Complete') 
         pause(1); % Puase for one second
     end
-    i_repeat = i_repeat + 1; 
-end
-
-fprintf('All repeats done\n');
+    %david addition, saving timestamp into time array
+    trigger_times{i_repeat}=state.internal.triggerTime;
+    %end david addition
     
+    i_repeat = i_repeat + 1; 
+    end
+%david addition, save trigger time array using savePath
+save(fullfile(state.files.savePath, 'trigger_times'), 'trigger_times');
+%end david addition
+fprintf('All repeats done\n');
+
+

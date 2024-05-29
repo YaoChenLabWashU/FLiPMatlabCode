@@ -24,8 +24,12 @@ function [] = zFLP_DoProcessWork()
 %         end
 %         
         %saving the data from all slices
+        %David Kim edit 05/29/24
+        %Saving Trigger time to continuous aquistion
+        triggerTime = state.internal.triggerTime;
+        %end David Kim edit
         filename=['continuous aquistion data_',num2str(state.files.lastAcquisition)];
-        save(filename, 'FLPdata_counter', 'FLPdata_time', 'FLPdata_lifetimes', 'FLPdata_fits');
+        save(filename, 'FLPdata_counter', 'FLPdata_time', 'FLPdata_lifetimes', 'FLPdata_fits', 'triggerTime'); %David Kim edit 05/29/24 added 'triggerTime'
 %     end
     
     if timerGetActiveStatus('zFLP')
